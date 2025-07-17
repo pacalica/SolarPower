@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SolarPower - Open Deposit</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="page">
+
+  <div class="container">
+    <h1>Open Deposit</h1>
+
+    <div class="deposit-box">
+      <p class="label">Send your USDT (BEP20) to the address below:</p>
+      <p id="depositAddress" class="address"></p>
+      <img id="depositQR" alt="QR Code" class="qr-code" />
+
+      <input type="number" id="depositAmount" placeholder="Amount (USDT)" class="input"/>
+      <button id="confirmDepositBtn" class="btn">I've sent deposit</button>
+    </div>
+  </div>
+
+  <script src="js/deposits.js"></script>
+</body>
+</html>
