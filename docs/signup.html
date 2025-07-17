@@ -2,22 +2,105 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SolarPower - Sign Up</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up – SolarPower</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #0f0c29, #302b63, #24243e);
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .signup-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input[type="email"],
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-top: 5px;
+      background: #ffffff11;
+      color: white;
+    }
+    .password-wrapper {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 10px;
+      background: #00f0ff;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      color: #000;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #00bcd4;
+    }
+  </style>
 </head>
-<body class="neon-background">
-  <div class="auth-container">
-    <h1>Create Account</h1>
-    <form id="signupForm" class="auth-form">
-      <input type="email" id="signupEmail" placeholder="Email" required />
-      <input type="password" id="signupPassword" placeholder="Password" required />
-      <input type="text" id="signupUsername" placeholder="Username" required />
+<body>
+  <div class="signup-container">
+    <h2>Create Account</h2>
+    <form id="signupForm">
+      <label for="signupEmail">Email</label>
+      <input type="email" id="signupEmail" required />
+
+      <label for="signupUsername">Username</label>
+      <input type="text" id="signupUsername" required />
+
+      <label for="signupPassword">Password</label>
+      <div class="password-wrapper">
+        <input type="password" id="signupPassword" required />
+        <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+      </div>
+
       <button type="submit">Sign Up</button>
     </form>
-    <p>Already have an account? <a href="index.html">Login here</a></p>
   </div>
 
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById("signupPassword");
+      const toggleBtn = document.querySelector(".toggle-password");
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+      toggleBtn.textContent = isPassword ? "🙈" : "👁️";
+    }
+  </script>
   <script src="js/signup.js"></script>
 </body>
 </html>
