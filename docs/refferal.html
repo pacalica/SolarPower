@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SolarPower - My Team</title>
+  <title>Referral - SolarPower</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="main-background">
   <div class="container">
-    <h1>My Team</h1>
-    <p>Your referral link:</p>
-    <input id="refLink" readonly style="width:100%;padding:10px;margin-bottom:20px;" />
+    <h1>My Referral Team</h1>
+
+    <div class="referral-box">
+      <p><strong>Your Referral Link:</strong></p>
+      <input type="text" id="refLink" readonly />
+      <button onclick="copyRef()">Copy</button>
+    </div>
 
     <h2>Level 1 Referrals</h2>
     <ul id="level1List"></ul>
