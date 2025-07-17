@@ -1,4 +1,4 @@
-// /docs/js/signup.js
+// js/signup.js
 
 document.getElementById("signupForm").addEventListener("submit", (e) => {
   e.preventDefault();
@@ -13,10 +13,20 @@ document.getElementById("signupForm").addEventListener("submit", (e) => {
     return;
   }
 
-  // Simulăm un wallet unic (înlocuiește cu conectare wallet reală dacă vrei)
+  const users = JSON.parse(localStorage.getItem("solarUsers")) || [];
+
+  // Verificăm dacă emailul este deja folosit
+  const existingUser = users.find((u) => u.email === email);
+  if (existingUser) {
+    alert("This email is already registered. Please log in.");
+    window.location.href = "index.html";
+    return;
+  }
+
+  // Creăm un wallet dummy
   const wallet = "wallet_" + Math.random().toString(36).substring(2, 10);
 
-  const user = {
+  const newUser = {
     email,
     password,
     username,
@@ -26,13 +36,9 @@ document.getElementById("signupForm").addEventListener("submit", (e) => {
     withdrawals: [],
   };
 
-  // Salvăm lista globală de utilizatori
-  const users = JSON.parse(localStorage.getItem("solarUsers")) || [];
-  users.push(user);
+  users.push(newUser);
   localStorage.setItem("solarUsers", JSON.stringify(users));
-
-  // Salvăm userul curent pentru login automat
-  localStorage.setItem("solarUser", JSON.stringify(user));
+  localStorage.setItem("solarUser", JSON.stringify(newUser));
 
   alert("Account created successfully!");
   window.location.href = "dashboard.html";
