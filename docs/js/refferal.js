@@ -1,34 +1,35 @@
 // referral.js
 
 const user = JSON.parse(localStorage.getItem("solarUser"));
+const allUsers = JSON.parse(localStorage.getItem("solarUsers")) || [];
+
 if (!user) {
+  alert("Not logged in.");
   window.location.href = "index.html";
 }
 
-document.getElementById("refLink").value =
-  window.location.origin + window.location.pathname.replace("referral.html", "signup.html") + "?ref=" + user.wallet;
+const refLink = `${window.location.origin}/signup.html?ref=${user.wallet}`;
+document.getElementById("refLink").value = refLink;
 
-const users = JSON.parse(localStorage.getItem("solarUsers")) || [];
-
-const level1 = users.filter(u => u.ref === user.wallet);
-const level2 = users.filter(u => level1.some(l1 => u.ref === l1.wallet));
-
-function renderList(list, elementId) {
-  const ul = document.getElementById(elementId);
-  ul.innerHTML = "";
-
-  if (list.length === 0) {
-    ul.innerHTML = "<li>No referrals</li>";
-    return;
-  }
-
-  list.forEach(u => {
-    const total = u.deposits?.reduce((sum, d) => sum + Number(d.amount || 0), 0) || 0;
-    const li = document.createElement("li");
-    li.textContent = `${u.username} - ${total} USDT`;
-    ul.appendChild(li);
-  });
+function copyRef() {
+  navigator.clipboard.writeText(refLink);
+  alert("Referral link copied!");
 }
 
-renderList(level1, "level1List");
-renderList(level2, "level2List");
+const level1 = allUsers.filter(u => u.referredBy === user.wallet);
+const level2 = allUsers.filter(u => level1.some(l1 => u.referredBy === l1.wallet));
+
+const level1List = document.getElementById("level1List");
+const level2List = document.getElementById("level2List");
+
+level1.forEach(u => {
+  const li = document.createElement("li");
+  li.textContent = `${u.email} - ${u.wallet}`;
+  level1List.appendChild(li);
+});
+
+level2.forEach(u => {
+  const li = document.createElement("li");
+  li.textContent = `${u.email} - ${u.wallet}`;
+  level2List.appendChild(li);
+});
