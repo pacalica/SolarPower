@@ -3,14 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SolarPower - Admin</title>
+  <title>Admin - SolarPower</title>
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body class="main-background">
   <div class="container">
-    <h1>Admin Panel</h1>
-    <p>All registered users & referral structure</p>
-    <ul id="userList"></ul>
+    <h1>Admin Dashboard</h1>
+
+    <h2>Pending Deposits</h2>
+    <table id="pendingDepositsTable">
+      <thead>
+        <tr><th>Email</th><th>Amount</th><th>Action</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2>Withdrawal Requests</h2>
+    <table id="withdrawalsTable">
+      <thead>
+        <tr><th>Email</th><th>Amount</th><th>Status</th><th>Action</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2>Referral Overview</h2>
+    <div id="referralStats"></div>
   </div>
 
   <script src="js/admin.js"></script>
