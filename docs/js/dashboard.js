@@ -1,31 +1,92 @@
-// /docs/js/dashboard.js
-document.addEventListener('DOMContentLoaded', () => {
-  const user = JSON.parse(localStorage.getItem('solarUser'));
-  const emailDisplay = document.getElementById('userEmail');
-  const balanceDisplay = document.getElementById('userBalance');
-  const depositList = document.getElementById('depositList');
-  const plansContainer = document.getElementById('plansContainer');
+// Verifică dacă utilizatorul este logat
+const user = JSON.parse(localStorage.getItem("user"));
+if (!user) {
+  window.location.href = "index.html";
+}
 
-  if (!user) {
-    window.location.href = 'index.html';
+// Afișează emailul utilizatorului
+document.getElementById("userEmail").innerText = user.email;
+
+// Inițializează datele dacă nu există
+if (!localStorage.getItem("deposits")) {
+  localStorage.setItem("deposits", JSON.stringify([]));
+}
+
+// Preia lista de depozite ale utilizatorului
+function getUserDeposits() {
+  const all = JSON.parse(localStorage.getItem("deposits")) || [];
+  return all.filter(dep => dep.email === user.email);
+}
+
+// Afișează depozitele în dashboard
+function renderDeposits() {
+  const list = document.getElementById("depositList");
+  const deposits = getUserDeposits();
+  list.innerHTML = "";
+
+  if (deposits.length === 0) {
+    list.innerHTML = "<li>No deposits yet.</li>";
     return;
   }
 
-  emailDisplay.textContent = user.email;
-  balanceDisplay.textContent = user.balance.toFixed(2);
+  deposits.forEach((d, index) => {
+    const item = document.createElement("li");
+    item.innerHTML = `
+      ${index + 1}. ${d.amount} USDT – ${d.interest}% (${d.date})
+    `;
+    list.appendChild(item);
+  });
+}
 
-  // Planuri de investiție
-  const plans = [
-    { name: "Starter Plan", min: 10, max: 199, percent: 3.5 },
-    { name: "Silver Plan", min: 200, max: 999, percent: 5.5 },
-    { name: "Gold Plan", min: 1000, max: 10000, percent: 7.5 },
-  ];
+// Calculează suma totală
+function calculateBalance() {
+  const deposits = getUserDeposits();
+  let total = 0;
+  deposits.forEach(d => {
+    total += parseFloat(d.amount);
+  });
+  document.getElementById("balance").innerText = total.toFixed(2);
+}
 
-  plans.forEach(plan => {
-    const div = document.createElement('div');
-    div.className = 'plan-box';
-    div.innerHTML = `
-      <h3>${plan.name}</h3>
-      <p>Range: ${plan.min} - ${plan.max} USDT</p>
-      <p>Interest: ${plan.percent}%</p>
-      <button onclick
+// Gestionează depunerea
+document.getElementById("depositForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const amount = parseFloat(document.getElementById("amount").value);
+  const interest = parseFloat(document.getElementById("plan").value);
+
+  if (isNaN(amount) || amount <= 0) {
+    alert("Please enter a valid amount.");
+    return;
+  }
+
+  const deposit = {
+    email: user.email,
+    amount: amount.toFixed(2),
+    interest,
+    date: new Date().toLocaleDateString(),
+  };
+
+  const allDeposits = JSON.parse(localStorage.getItem("deposits")) || [];
+  allDeposits.push(deposit);
+  localStorage.setItem("deposits", JSON.stringify(allDeposits));
+
+  document.getElementById("depositForm").reset();
+  renderDeposits();
+  calculateBalance();
+  alert("Deposit recorded successfully.");
+});
+
+// Referral link
+const referral = `${window.location.origin}/docs/index.html?ref=${user.email}`;
+document.getElementById("refLink").value = referral;
+
+// Logout
+function logout() {
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
+}
+
+// La încărcare
+renderDeposits();
+calculateBalance();
